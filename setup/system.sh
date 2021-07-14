@@ -87,7 +87,6 @@ if [ ! -f /usr/bin/add-apt-repository ]; then
 fi
 
 echo "Before apt_install php7.3"
-php -v
 
 # Install php7.3.
 hide_output add-apt-repository -y ppa:ondrej/php
@@ -99,7 +98,6 @@ apt_install -y php7.3 php7.3-fpm \
 	php7.3-intl php7.3-imagick php7.3-gmp php7.3-bcmath
 
 echo "After apt_install php7.3 "
-php -v
 
 # Ensure the universe repository is enabled since some of our packages
 # come from there and minimal Ubuntu installs may have it turned off.
