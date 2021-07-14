@@ -17,7 +17,7 @@ source /etc/mailinabox.conf # load global vars
 
 echo "Installing Z-Push (Exchange/ActiveSync server)..."
 apt_install \
-	php-soap php-imap libawl-php php-xsl
+	php7.3-soap php7.3-imap libawl-php php7.3-xsl
 
 phpenmod -v php imap
 
