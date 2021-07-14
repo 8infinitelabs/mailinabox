@@ -292,7 +292,9 @@ var_export(\$CONFIG);
 echo ";";
 ?>
 EOF
-chown www-data.www-data $STORAGE_ROOT/owncloud/config.php
+#chown www-data.www-data $STORAGE_ROOT/owncloud/config.php
+setfacl -m u:www-data:r $STORAGE_ROOT/owncloud/config.php
+echo "Set setfacl config.php"
 
 # Enable/disable apps. Note that this must be done after the Nextcloud setup.
 # The firstrunwizard gave Josh all sorts of problems, so disabling that.
