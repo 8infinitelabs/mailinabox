@@ -413,7 +413,7 @@ class BashScript(Grammar):
 		result = parser.parse_string(string)
 
 		v = "<div class='row'><div class='col-xs-12 sourcefile'>view the bash source for the following section at <a href=\"%s\">%s</a></div></div>\n" \
-			 % ("https://github.com/mail-in-a-box/mailinabox/tree/master/" + fn, fn)
+			 % ("https://github.com/8infinitelabs/mailinabox/tree/master/" + fn, fn)
 
 		mode = 0
 		for item in result.value():
