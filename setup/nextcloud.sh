@@ -300,7 +300,7 @@ echo "Set setfacl config.php"
 # The firstrunwizard gave Josh all sorts of problems, so disabling that.
 # user_external is what allows Nextcloud to use IMAP for login. The contacts
 # and calendar apps are the extensions we really care about here.
-hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:disable firstrunwizard
+#hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:disable firstrunwizard
 hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable user_external
 hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable contacts
 hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable calendar
