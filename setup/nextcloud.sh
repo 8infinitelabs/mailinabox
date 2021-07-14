@@ -11,10 +11,10 @@ echo "Installing Nextcloud (contacts/calendar)..."
 
 apt-get purge -qq -y owncloud* # we used to use the package manager
 
-apt_install php php-fpm \
-	php-cli php-sqlite3 php-gd php-imap php-curl php-pear curl \
-	php-dev php-gd php-xml php-mbstring php-zip php-apcu php-json \
-	php-intl php-imagick php-gmp php-bcmath
+apt_install php7.3 php7.3-fpm \
+	php7.3-cli php7.3-sqlite3 php7.3-gd php7.3-imap php7.3-curl php7.3-pear curl \
+	php7.3-dev php7.3-gd php7.3-xml php7.3-mbstring php7.3-zip php7.3-apcu php7.3-json \
+	php7.3-intl php7.3-imagick php7.3-gmp php7.3-bcmath
 
 InstallNextcloud() {
 
@@ -97,8 +97,10 @@ InstallNextcloud() {
 }
 
 # Nextcloud Version to install. Checks are done down below to step through intermediate versions.
-nextcloud_ver=20.0.8
-nextcloud_hash=372b0b4bb07c7984c04917aff86b280e68fbe761
+#nextcloud_ver=20.0.8
+#nextcloud_hash=372b0b4bb07c7984c04917aff86b280e68fbe761
+nextcloud_ver=22.0.0
+nextcloud_hash=28806A878AE423A28372792ED75899B9A724937A
 contacts_ver=3.5.1
 contacts_hash=d2ffbccd3ed89fa41da20a1dff149504c3b33b93
 calendar_ver=2.2.0
@@ -349,6 +351,9 @@ cat > /etc/cron.d/mailinabox-nextcloud << EOF;
 */5 * * * *	root	sudo -u www-data php -f /usr/local/lib/owncloud/cron.php
 EOF
 chmod +x /etc/cron.d/mailinabox-nextcloud
+
+# activate 
+sudo -u www-data php /usr/local/lib/owncloud/occ app:enable photos dashboard activity
 
 # Remove previous hourly cronjob
 rm -f /etc/cron.hourly/mailinabox-owncloud
