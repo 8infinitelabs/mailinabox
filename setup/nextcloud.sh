@@ -257,6 +257,10 @@ EOF
 	(cd /usr/local/lib/owncloud; sudo -u www-data php /usr/local/lib/owncloud/index.php;)
 fi
 
+setfacl -m u:www-data:r $STORAGE_ROOT/owncloud/config.php
+echo "Set setfacl config.php"
+
+
 # Update config.php.
 # * trusted_domains is reset to localhost by autoconfig starting with ownCloud 8.1.1,
 #   so set it here. It also can change if the box's PRIMARY_HOSTNAME changes, so
@@ -293,8 +297,6 @@ echo ";";
 ?>
 EOF
 #chown www-data.www-data $STORAGE_ROOT/owncloud/config.php
-setfacl -m u:www-data:r $STORAGE_ROOT/owncloud/config.php
-echo "Set setfacl config.php"
 
 
 # If apc is explicitly disabled we need to enable it
