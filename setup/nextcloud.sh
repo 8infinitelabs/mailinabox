@@ -322,12 +322,15 @@ fi
 # activate 
 hide_output sudo -u www-data php /usr/local/lib/owncloud/occ app:enable photos dashboard activity contacts calendar user_external
 
+echo "after activate apps"
 
 # When upgrading, run the upgrade script again now that apps are enabled. It seems like
 # the first upgrade at the top won't work because apps may be disabled during upgrade?
 # Check for success (0=ok, 3=no upgrade needed).
 sudo -u www-data php /usr/local/lib/owncloud/occ upgrade
 if [ \( $? -ne 0 \) -a \( $? -ne 3 \) ]; then exit 1; fi
+
+echo "after occ upgrade"
 
 # Disable default apps that we don't support
 # sudo -u www-data \
@@ -344,6 +347,8 @@ tools/editconf.py /etc/php/7.3/fpm/php.ini -c ';' \
 	max_execution_time=600 \
 	short_open_tag=On
 
+echo "after php.ini mod"
+
 # Set Nextcloud recommended opcache settings
 tools/editconf.py /etc/php/7.3/cli/conf.d/10-opcache.ini -c ';' \
 	opcache.enable=1 \
@@ -353,6 +358,8 @@ tools/editconf.py /etc/php/7.3/cli/conf.d/10-opcache.ini -c ';' \
 	opcache.memory_consumption=128 \
 	opcache.save_comments=1 \
 	opcache.revalidate_freq=1
+
+echo "after 10-opcache mod"
 
 # Set up a cron job for Nextcloud.
 cat > /etc/cron.d/mailinabox-nextcloud << EOF;
@@ -376,3 +383,4 @@ rm -f /etc/cron.hourly/mailinabox-owncloud
 
 # Enable PHP modules and restart PHP.
 restart_service php7.3-fpm
+echo "after restart php"
