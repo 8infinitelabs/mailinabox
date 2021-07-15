@@ -257,11 +257,6 @@ EOF
 	(cd /usr/local/lib/owncloud; sudo -u www-data php /usr/local/lib/owncloud/index.php;)
 fi
 
-#setfacl -m u:www-data:r $STORAGE_ROOT/owncloud/config.php
-#echo "Set setfacl config.php"
-chown root.www-data $STORAGE_ROOT/owncloud/config.php
-echo "Set chown config.php"
-
 # Update config.php.
 # * trusted_domains is reset to localhost by autoconfig starting with ownCloud 8.1.1,
 #   so set it here. It also can change if the box's PRIMARY_HOSTNAME changes, so
@@ -298,7 +293,7 @@ echo ";";
 ?>
 EOF
 #chown www-data.www-data $STORAGE_ROOT/owncloud/config.php
-
+sudo chown www-data.www-data /home/user-data/owncloud/config.php
 
 # If apc is explicitly disabled we need to enable it
 if grep -q apc.enabled=0 /etc/php/7.3/mods-available/apcu.ini; then
@@ -323,9 +318,9 @@ fi
 #hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable calendar
 
 # activate 
-hide_output sudo -u www-data php /usr/local/lib/owncloud/occ app:enable photos dashboard activity contacts calendar user_external
+# hide_output sudo -u www-data php /usr/local/lib/owncloud/occ app:enable photos dashboard activity contacts calendar user_external
 
-echo "after activate apps"
+#echo "after activate apps"
 
 # When upgrading, run the upgrade script again now that apps are enabled. It seems like
 # the first upgrade at the top won't work because apps may be disabled during upgrade?
