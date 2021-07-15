@@ -296,6 +296,13 @@ EOF
 setfacl -m u:www-data:r $STORAGE_ROOT/owncloud/config.php
 echo "Set setfacl config.php"
 
+
+# If apc is explicitly disabled we need to enable it
+if grep -q apc.enabled=0 /etc/php/7.3/mods-available/apcu.ini; then
+	tools/editconf.py /etc/php/7.3/mods-available/apcu.ini -c ';' \
+		apc.enabled=1
+fi
+
 # Enable/disable apps. Note that this must be done after the Nextcloud setup.
 # The firstrunwizard gave Josh all sorts of problems, so disabling that.
 # user_external is what allows Nextcloud to use IMAP for login. The contacts
@@ -304,6 +311,10 @@ echo "Set setfacl config.php"
 #hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable user_external
 #hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable contacts
 #hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable calendar
+
+# activate 
+hide_output sudo -u www-data php /usr/local/lib/owncloud/occ app:enable photos dashboard activity contacts calendar user_external
+
 
 # When upgrading, run the upgrade script again now that apps are enabled. It seems like
 # the first upgrade at the top won't work because apps may be disabled during upgrade?
@@ -335,17 +346,6 @@ tools/editconf.py /etc/php/7.3/cli/conf.d/10-opcache.ini -c ';' \
 	opcache.memory_consumption=128 \
 	opcache.save_comments=1 \
 	opcache.revalidate_freq=1
-
-# If apc is explicitly disabled we need to enable it
-if grep -q apc.enabled=0 /etc/php/7.3/mods-available/apcu.ini; then
-	tools/editconf.py /etc/php/7.3/mods-available/apcu.ini -c ';' \
-		apc.enabled=1
-fi
-
-
-# activate 
-hide_output sudo -u www-data php /usr/local/lib/owncloud/occ app:enable photos dashboard activity contacts calendar user_external
-
 
 # Set up a cron job for Nextcloud.
 cat > /etc/cron.d/mailinabox-nextcloud << EOF;
