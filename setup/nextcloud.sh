@@ -301,9 +301,12 @@ echo "Set setfacl config.php"
 # user_external is what allows Nextcloud to use IMAP for login. The contacts
 # and calendar apps are the extensions we really care about here.
 #hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:disable firstrunwizard
-hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable user_external
-hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable contacts
-hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable calendar
+#hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable user_external
+#hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable contacts
+#hide_output sudo -u www-data php /usr/local/lib/owncloud/console.php app:enable calendar
+
+# activate 
+hide_output sudo -u www-data php /usr/local/lib/owncloud/occ app:enable photos dashboard activity contacts calendar user_external
 
 # When upgrading, run the upgrade script again now that apps are enabled. It seems like
 # the first upgrade at the top won't work because apps may be disabled during upgrade?
@@ -312,9 +315,9 @@ sudo -u www-data php /usr/local/lib/owncloud/occ upgrade
 if [ \( $? -ne 0 \) -a \( $? -ne 3 \) ]; then exit 1; fi
 
 # Disable default apps that we don't support
-sudo -u www-data \
-	php /usr/local/lib/owncloud/occ app:disable photos dashboard activity \
-	| (grep -v "No such app enabled" || /bin/true)
+# sudo -u www-data \
+#	php /usr/local/lib/owncloud/occ app:disable photos dashboard activity \
+#	| (grep -v "No such app enabled" || /bin/true)
 
 # Set PHP FPM values to support large file uploads
 # (semicolon is the comment character in this file, hashes produce deprecation warnings)
@@ -349,9 +352,6 @@ cat > /etc/cron.d/mailinabox-nextcloud << EOF;
 */5 * * * *	root	sudo -u www-data php -f /usr/local/lib/owncloud/cron.php
 EOF
 chmod +x /etc/cron.d/mailinabox-nextcloud
-
-# activate 
-sudo -u www-data php /usr/local/lib/owncloud/occ app:enable photos dashboard activity
 
 # Remove previous hourly cronjob
 rm -f /etc/cron.hourly/mailinabox-owncloud
