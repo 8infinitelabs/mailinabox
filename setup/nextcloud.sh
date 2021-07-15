@@ -303,6 +303,13 @@ if grep -q apc.enabled=0 /etc/php/7.3/mods-available/apcu.ini; then
 		apc.enabled=1
 fi
 
+ # Fix https://help.nextcloud.com/t/nc-21-manual-update-issues/108693/4?$ 
+ if ! grep -qFx apc.enable_cli=1 $PHP_MODS_DIR/apcu.ini 
+ then 
+     echo "apc.enable_cli=1" >> $PHP_MODS_DIR/apcu.ini 
+     check_command phpenmod -v ALL apcu 
+ fi 
+
 # Enable/disable apps. Note that this must be done after the Nextcloud setup.
 # The firstrunwizard gave Josh all sorts of problems, so disabling that.
 # user_external is what allows Nextcloud to use IMAP for login. The contacts
