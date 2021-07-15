@@ -304,9 +304,9 @@ if grep -q apc.enabled=0 /etc/php/7.3/mods-available/apcu.ini; then
 fi
 
  # Fix https://help.nextcloud.com/t/nc-21-manual-update-issues/108693/4?$ 
- if ! grep -qFx apc.enable_cli=1 $PHP_MODS_DIR/apcu.ini 
+ if ! grep -qFx apc.enable_cli=1 /etc/php/7.3/mods-available/apcu.ini 
  then 
-     echo "apc.enable_cli=1" >> $PHP_MODS_DIR/apcu.ini 
+     echo "apc.enable_cli=1" >> /etc/php/7.3/mods-available/apcu.ini 
      check_command phpenmod -v ALL apcu 
  fi 
 
