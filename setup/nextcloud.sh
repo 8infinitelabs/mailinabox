@@ -257,9 +257,10 @@ EOF
 	(cd /usr/local/lib/owncloud; sudo -u www-data php /usr/local/lib/owncloud/index.php;)
 fi
 
-setfacl -m u:www-data:r $STORAGE_ROOT/owncloud/config.php
-echo "Set setfacl config.php"
-
+#setfacl -m u:www-data:r $STORAGE_ROOT/owncloud/config.php
+#echo "Set setfacl config.php"
+chown root.www-data $STORAGE_ROOT/owncloud/config.php
+echo "Set chown config.php"
 
 # Update config.php.
 # * trusted_domains is reset to localhost by autoconfig starting with ownCloud 8.1.1,
