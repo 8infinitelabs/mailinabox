@@ -92,11 +92,12 @@ InstallNextcloud() {
 }
 
 # Nextcloud Version to install. Checks are done down below to step through intermediate versions.
-#nextcloud_ver=20.0.8
-#nextcloud_hash=372b0b4bb07c7984c04917aff86b280e68fbe761
-nextcloud_ver=22.0.0
-#nextcloud_hash=28806A878AE423A28372792ED75899B9A724937A
-nextcloud_hash=b528c934e258e8f8de45e896ed1126f741f0b6da
+nextcloud_ver=20.0.8
+nextcloud_hash=372b0b4bb07c7984c04917aff86b280e68fbe761
+
+#nextcloud_ver=22.0.0
+#nextcloud_hash=b528c934e258e8f8de45e896ed1126f741f0b6da
+
 contacts_ver=3.5.1
 contacts_hash=d2ffbccd3ed89fa41da20a1dff149504c3b33b93
 calendar_ver=2.2.0
@@ -213,6 +214,7 @@ if [ ! -f $STORAGE_ROOT/owncloud/owncloud.db ]; then
         'arguments' => array(
           '127.0.0.1', 143, null
          ),
+		 
     ),
   ),
   'memcache.local' => '\OC\Memcache\APCu',
@@ -325,7 +327,7 @@ fi
 # When upgrading, run the upgrade script again now that apps are enabled. It seems like
 # the first upgrade at the top won't work because apps may be disabled during upgrade?
 # Check for success (0=ok, 3=no upgrade needed).
-sudo -u www-data php /usr/local/lib/owncloud/occ upgrade
+sgiudo -u www-data php /usr/local/lib/owncloud/occ upgrade
 if [ \( $? -ne 0 \) -a \( $? -ne 3 \) ]; then exit 1; fi
 
 echo "after occ upgrade"
